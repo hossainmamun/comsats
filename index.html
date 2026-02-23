@@ -1,1 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COMSATS Merit Calculator</title>
+    <!-- External CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="st-general-main-container">
+      <!-- Header Section -->
+      <div class="st-general-header">
+        <span class="st-general-title">COMSATS Merit Calculator</span>
+        <p class="st-general-subtitle">
+          Calculate your aggregate with verified weightings
+        </p>
+      </div>
 
+      <!-- Input Form -->
+      <section class="comsat-calc-form" id="comsat-calc-form">
+        <!-- Rule set selector: Allows for future formulas if needed -->
+        <div class="comsat-calc-field-group">
+          <label for="comsat-calc-rule" class="comsat-calc-label"
+            >Select Rule Set</label
+          >
+          <select id="comsat-calc-rule" class="st-general-select">
+            <option value="standard" selected>
+              Standard (Matric 10% - Inter 40% - Entry Test 50%)
+            </option>
+            <!-- Additional rule sets can be added here if verified formulas differ -->
+          </select>
+        </div>
+        <div class="comsat-calc-input-group-container">
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-matric-obtained" class="comsat-calc-label"
+              >Matric/O‑Level Obtained Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-matric-obtained"
+              class="st-general-input"
+              min="0"
+              step="0.01"
+              placeholder="e.g. 900"
+              required
+            />
+          </div>
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-matric-total" class="comsat-calc-label"
+              >Matric/O‑Level Total Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-matric-total"
+              class="st-general-input"
+              min="1"
+              step="0.01"
+              placeholder="e.g. 1100"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="comsat-calc-input-group-container">
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-inter-obtained" class="comsat-calc-label"
+              >Intermediate/FSc/HSSC/A‑Level Obtained Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-inter-obtained"
+              class="st-general-input"
+              min="0"
+              step="0.01"
+              placeholder="e.g. 900"
+              required
+            />
+          </div>
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-inter-total" class="comsat-calc-label"
+              >Intermediate/FSc/HSSC/A‑Level Total Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-inter-total"
+              class="st-general-input"
+              min="1"
+              step="0.01"
+              placeholder="e.g. 1100"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="comsat-calc-input-group-container">
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-nts-obtained" class="comsat-calc-label"
+              >NTS/Entry Test Obtained Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-nts-obtained"
+              class="st-general-input"
+              min="0"
+              step="0.01"
+              placeholder="e.g. 70"
+              required
+            />
+          </div>
+          <div class="comsat-calc-field-group">
+            <label for="comsat-calc-nts-total" class="comsat-calc-label"
+              >NTS/Entry Test Total Marks</label
+            >
+            <input
+              type="number"
+              id="comsat-calc-nts-total"
+              class="st-general-input"
+              min="1"
+              step="0.01"
+              placeholder="e.g. 100"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Error message container -->
+        <div
+          id="comsat-calc-error"
+          class="comsat-calc-error"
+          aria-live="assertive"
+        ></div>
+      </section>
+      <!-- Calculate Button -->
+      <div class="comsat-calc-actions">
+        <button
+          id="comsat-calc-calculate"
+          class="st-general-btn st-main-calculation-btn comsat-calc-button comsat-calc-primary"
+          type="button"
+        >
+          <i class="fa-solid fa-calculator"></i>
+          Calculate
+        </button>
+      </div>
+
+      <!-- Result Section -->
+      <section
+        id="comsat-calc-result-section"
+        class="comsat-calc-result"
+        hidden
+      >
+        <h2 class="comsat-calc-result-title">Result</h2>
+        <div
+          id="comsat-calc-result-summary"
+          class="comsat-calc-result-summary"
+        ></div>
+        <!-- Action buttons for result -->
+        <div
+          id="comsat-calc-result-actions"
+          class="comsat-calc-result-actions"
+          hidden
+        >
+          <button
+            id="comsat-calc-pdf"
+            class="st-general-btn st-pdf-btn comsat-calc-button"
+          >
+            <i class="fa-regular fa-file-pdf"></i>
+            PDF Report
+          </button>
+          <button
+            id="comsat-calc-copy"
+            class="st-general-btn st-copy-btn comsat-calc-button"
+          >
+            <i class="fa-solid fa-copy"></i>
+            Copy Result
+          </button>
+          <button
+            id="comsat-calc-reset"
+            class="st-general-btn st-main-reset-btn comsat-calc-button comsat-calc-danger"
+          >
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+            Reset
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="app.js"></script>
+  </body>
+</html>
